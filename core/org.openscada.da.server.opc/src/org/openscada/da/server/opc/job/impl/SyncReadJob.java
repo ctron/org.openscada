@@ -1,6 +1,7 @@
 /*
  * This file is part of the OpenSCADA project
  * Copyright (C) 2006-2011 TH4 SYSTEMS GmbH (http://th4-systems.com)
+ * Copyright (C) 2018 Red Hat Inc
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,17 +33,17 @@ public class SyncReadJob extends ThreadJob implements JobResult<KeyedResultSet<I
 
     private final OPCModel model;
 
-    private final Integer[] clientHandles;
+    private final Integer[] serverHandles;
 
     private final OPCDATASOURCE dataSource;
 
     private KeyedResultSet<Integer, OPCITEMSTATE> result;
 
-    public SyncReadJob ( final long timeout, final OPCModel model, final OPCDATASOURCE dataSource, final Integer[] clientHandles )
+    public SyncReadJob ( final long timeout, final OPCModel model, final OPCDATASOURCE dataSource, final Integer[] serverHandles )
     {
         super ( timeout );
         this.model = model;
-        this.clientHandles = clientHandles;
+        this.serverHandles = serverHandles;
         this.dataSource = dataSource;
     }
 
@@ -50,7 +51,7 @@ public class SyncReadJob extends ThreadJob implements JobResult<KeyedResultSet<I
     protected void perform () throws Exception
     {
         logger.debug ( "Sync read job" );
-        this.result = this.model.getSyncIo ().read ( this.dataSource, this.clientHandles );
+        this.result = this.model.getSyncIo ().read ( this.dataSource, this.serverHandles );
     }
 
     @Override
